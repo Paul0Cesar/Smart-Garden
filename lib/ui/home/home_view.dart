@@ -22,9 +22,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: FloatingActionButton(
-        heroTag:"bluetooth_settings_btn",
+        heroTag: "bluetooth_settings_btn",
         mini: true,
-        onPressed: () => viewModel.test(),
+        onPressed: () {
+          Navigator.of(context).pushNamed(Routes.bluetooth);
+        },
         child: const Icon(Icons.bluetooth),
       ),
       body: SingleChildScrollView(
@@ -42,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.only(bottom: 12.0),
             child: FloatingActionButton(
-              heroTag:"settings_btn",
+              heroTag: "settings_btn",
               onPressed: () {
                 Navigator.of(context).pushNamed(Routes.settings);
               },
