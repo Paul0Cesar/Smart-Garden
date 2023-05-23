@@ -159,8 +159,8 @@ class _HomeScreenState extends State<HomeScreen> {
               child: FloatingActionButton(
                 heroTag: "settings_btn",
                 onPressed: () {
-                  // Navigator.of(context).pushNamed(Routes.settings);
-                  viewModel.toggleWatering();
+                  Navigator.of(context).pushNamed(Routes.settings);
+                  // viewModel.toggleWatering();
                 },
                 backgroundColor: Colors.lightGreen,
                 shape: const CircleBorder(),
