@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:smart_garden/repositories/bluetooth/BluetoothRepositoryImpl.dart';
 import 'package:smart_garden/ui/home/home_view.dart';
 import 'package:smart_garden/ui/home/home_view_model.dart';
+import 'package:smart_garden/ui/settings/settings_view_model.dart';
 import 'package:smart_garden/utils/Routes.dart';
 
 void main() {
@@ -17,8 +18,10 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-            create: (_) => HomeViewViewModel(
-                bluetoothRepository: BluetoothRepositoryImpl())),
+          create: (_) =>
+              HomeViewViewModel(bluetoothRepository: BluetoothRepositoryImpl()),
+        ),
+        ChangeNotifierProvider(create: (_) => SettingsViewModel())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
