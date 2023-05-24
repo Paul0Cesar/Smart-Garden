@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
           heroTag: "bluetooth_settings_btn",
           backgroundColor: Colors.lightGreen,
           shape: const CircleBorder(),
-          onPressed: () => viewModel.test(),
+          onPressed: () => Navigator.of(context).pushNamed(Routes.bluetooth),
           child: const SizedBox(
               child: Icon(
             Icons.bluetooth_connected_rounded,
