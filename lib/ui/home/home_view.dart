@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_garden/ui/home/home_view_model.dart';
 import '../../utils/Routes.dart';
@@ -51,11 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
                       decoration: BoxDecoration(
-                        image: const DecorationImage(
-                            image: AssetImage(
-                                'assets/images/cloud_background.png'),
-                            fit: BoxFit.contain,
-                            alignment: Alignment.topCenter),
                         borderRadius: const BorderRadius.horizontal(
                             left: Radius.circular(20.0),
                             right: Radius.circular(20.0)),
@@ -67,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.white,
                       ),
                       child: Column(
+                        mainAxisAlignment:MainAxisAlignment.center,
                         children: [
                           Padding(
                             padding:
@@ -99,13 +96,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 15.0, vertical: 2.0),
                                         child: Row(children: [
-                                          Image.asset(
-                                              'assets/images/water.png'),
+                                          Lottie.asset(width:30,height:30,
+                                              'assets/lottie/water.json'),
                                           Text(
                                               '${viewModel.humidity.toString()} %'),
                                           const SizedBox(width: 5.0),
-                                          Image.asset(
-                                              'assets/images/light.png'),
+                                          Lottie.asset(width:30,height:30,
+                                              'assets/lottie/light.json'),
                                           Text(
                                               '${viewModel.luminosity.toString()} lx'),
                                         ]),
@@ -120,44 +117,31 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: viewModel.isWatering
-                                          ? const AssetImage(
-                                              'assets/images/cloud_raining.png')
-                                          : const AssetImage(
-                                              'assets/images/plant.png'),
-                                      alignment: viewModel.isWatering
-                                          ? Alignment.topCenter
-                                          : Alignment.center)),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: viewModel.isWatering
-                                        ? [
-                                            Image.asset(
-                                                'assets/images/cloud1.png'),
-                                            Image.asset(
-                                                'assets/images/cloud2.png'),
-                                          ]
-                                        : [],
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: Stack(
+                                    alignment: AlignmentDirectional.center,
+                                    children: [
+                                      Lottie.asset(
+                                          width: 200,
+                                          height: 200,
+                                          repeat: false,
+                                          'assets/lottie/flower.json'),
+                                      Positioned(
+                                          bottom: -110,
+                                          child: Image.asset(
+                                              'assets/images/bucket.png'))
+                                    ],
                                   ),
-                                  Container(
-                                      padding: const EdgeInsets.only(
-                                        left: 5.0,
-                                      ),
-                                      decoration: const BoxDecoration(
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  'assets/images/flower.png'),
-                                              alignment: Alignment.topCenter)),
-                                      child: Image.asset(
-                                          'assets/images/bucket.png')),
-                                ],
-                              ),
+                                ),
+                                Positioned(
+                                    child: (viewModel.isWatering
+                                        ? Lottie.asset(
+                                            'assets/lottie/rain.json')
+                                        : Lottie.asset(
+                                            'assets/lottie/clouds.json'))),
+                              ],
                             ),
                           ),
                         ],

@@ -6,7 +6,6 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:smart_garden/repositories/bluetooth/BluetoothRepository.dart';
 
 class HomeViewViewModel with ChangeNotifier {
-
   late BluetoothRepository bluetoothRepository;
 
   bool _isWatering = false;
