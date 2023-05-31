@@ -48,13 +48,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ],
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Atualizar',
-                      style: TextStyle(fontSize: 15, color: Colors.white)),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.green),
-                    fixedSize: MaterialStateProperty.all(Size(300, 50)),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text('Atualizar',
+                        style: TextStyle(fontSize: 15, color: Colors.white)),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                      fixedSize: MaterialStateProperty.all(Size(300, 50)),
+                    ),
                   ),
                 )
               ],

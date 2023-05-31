@@ -128,13 +128,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                           height: 200,
                                           repeat: false,
                                           'assets/lottie/flower.json'),
-                                      Positioned(
-                                          bottom: -110,
-                                          child: Image.asset(
-                                              'assets/images/bucket.png'))
                                     ],
                                   ),
                                 ),
+                                Positioned(
+                                    bottom: 35,
+                                    left: 105,
+                                    child: Image.asset(
+                                        'assets/images/bucket.png')),
                                 Positioned(
                                     child: (viewModel.isWatering
                                         ? Lottie.asset(
