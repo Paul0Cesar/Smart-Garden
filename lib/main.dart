@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_garden/repositories/bluetooth/BluetoothRepositoryImpl.dart';
+import 'package:smart_garden/ui/bluetooth/bluetooth_view_model.dart';
 import 'package:smart_garden/ui/home/home_view.dart';
 import 'package:smart_garden/ui/home/home_view_model.dart';
 import 'package:smart_garden/ui/settings/settings_view_model.dart';
@@ -21,12 +22,16 @@ class MyApp extends StatelessWidget {
           create: (_) =>
               HomeViewViewModel(bluetoothRepository: BluetoothRepositoryImpl()),
         ),
-        ChangeNotifierProvider(create: (_) => SettingsViewModel())
+        ChangeNotifierProvider(create: (_) => SettingsViewModel()),
+        ChangeNotifierProvider(
+          create: (_) => BluetoothViewModel(
+              bluetoothRepository: BluetoothRepositoryImpl()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen),
           useMaterial3: true,
         ),
         initialRoute: Routes.home,

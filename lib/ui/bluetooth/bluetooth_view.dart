@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
+import 'package:smart_garden/ui/bluetooth/bluetooth_view_model.dart';
 
-import 'BluetoothDeviceListEntry.dart';
+import 'bluetooth_device_element.dart';
 import 'detailpage.dart';
 
 class BluetoothScreen extends StatefulWidget {
@@ -12,108 +15,56 @@ class BluetoothScreen extends StatefulWidget {
 }
 
 class _BluetoothScreenState extends State<BluetoothScreen> {
-  BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
-
-  List<BluetoothDevice> devices = <BluetoothDevice>[];
-
   @override
   void initState() {
     super.initState();
-    _getBTState();
-    _stateChangeListener();
+    checkPermissions();
   }
 
-  _getBTState() {
-    FlutterBluetoothSerial.instance.state.then((state) {
-      _bluetoothState = state;
-      if (_bluetoothState.isEnabled) {
-        _listBondedDevices();
-      }
-      setState(() {});
-    });
-  }
-
-  _stateChangeListener() {
-    FlutterBluetoothSerial.instance
-        .onStateChanged()
-        .listen((BluetoothState state) {
-      _bluetoothState = state;
-      if (_bluetoothState.isEnabled) {
-        _listBondedDevices();
-      } else {
-        devices.clear();
-      }
-      print("State isEnabled: ${state.isEnabled}");
-      setState(() {});
-    });
-  }
-
-  _listBondedDevices() {
-    FlutterBluetoothSerial.instance
-        .getBondedDevices()
-        .then((List<BluetoothDevice> bondedDevices) {
-      devices = bondedDevices;
-      setState(() {});
-    });
+  Future<void> checkPermissions() async {
+    Map<Permission, PermissionStatus> status = await [
+      Permission.location,
+      Permission.bluetooth,
+      Permission.bluetoothScan,
+      Permission.bluetoothAdvertise,
+      Permission.bluetoothConnect,
+    ].request();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Smart Garden - Bluetooth"),
-          centerTitle: true,
-        ),
-        body: Container(
-          child: Column(
-            children: [
-              SwitchListTile(
-                title: Text("Enable Bluetooth"),
-                value: _bluetoothState.isEnabled,
-                onChanged: (bool value) {
-                  future() async {
-                    if (value) {
-                      await FlutterBluetoothSerial.instance.requestEnable();
-                    } else {
-                      await FlutterBluetoothSerial.instance.requestDisable();
-                    }
-                    future().then((_) {
-                      setState(() {});
-                    });
-                  }
-                },
+    var viewModel = Provider.of<BluetoothViewModel>(context);
+    return ChangeNotifierProvider<BluetoothViewModel>(
+        create: (BuildContext context) => viewModel,
+        builder: (context, provider) {
+          return Scaffold(
+              appBar: AppBar(
+                title: const Text("Smart Garden - Bluetooth"),
+                centerTitle: true,
               ),
-              ListTile(
-                title: Text("Bluetooth Status"),
-                subtitle: Text(_bluetoothState.toString()),
-                trailing: ElevatedButton(
-                  child: Text("Settings"),
-                  onPressed: () {
-                    FlutterBluetoothSerial.instance.openSettings();
-                  },
-                ),
-              ),
-              Expanded(
-                child: ListView(
-                    children: devices
-                        .map((_device) => BluetoothDeviceListEntry(
-                              device: _device,
-                              enabled: true,
-                              onTap: () {
-                                print("Item");
-                                _startCameraConnect(context, _device);
-                              },
-                            ))
-                        .toList()),
-              )
-            ],
-          ),
-        ));
-  }
-
-  void _startCameraConnect(BuildContext context, BluetoothDevice server) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return DetailPage(server: server);
-    }));
+              body: Column(
+                children: [
+                  SwitchListTile(
+                    title: const Text("Enable Bluetooth"),
+                    value: viewModel.bluetoothIsEnabled,
+                    onChanged: (bool value) {
+                      viewModel.toggleBluetoothStatus();
+                    },
+                  ),
+                  Expanded(
+                    child: ListView(
+                        children: viewModel.bluetoothDevices
+                            .map((device) => BluetoothDeviceElement(
+                                  device: device,
+                                  enabled: true,
+                                  onTap: () {
+                                    Navigator.pop(context, device);
+                                  },
+                                ))
+                            .toList()),
+                  )
+                ],
+              ));
+        });
   }
 }
