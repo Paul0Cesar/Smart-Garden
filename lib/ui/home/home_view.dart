@@ -3,7 +3,9 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_garden/ui/home/home_view_model.dart';
+import 'package:smart_garden/ui/settings/settings_view.dart';
 import '../../utils/Routes.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -30,20 +32,43 @@ class _HomeScreenState extends State<HomeScreen> {
               shape: const CircleBorder(),
               onPressed: () async {
                 final device =
-                    await Navigator.of(context).pushNamed(Routes.bluetooth);
+                await Navigator.of(context).pushNamed(Routes.bluetooth);
                 if (device is BluetoothDevice) {
                   viewModel.setDeviceConnected(device);
                 }
               },
               child: const SizedBox(
                   child: Icon(
-                Icons.bluetooth_connected_rounded,
-                color: Colors.white,
-                size: 40.0,
-              )),
+                    Icons.bluetooth_connected_rounded,
+                    color: Colors.white,
+                    size: 40.0,
+                  )),
             ),
             body: Column(
               children: [
+                Container(
+                    decoration: BoxDecoration(
+                        borderRadius:
+                        BorderRadius.circular(30.0),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: .5,
+                          style: BorderStyle.solid,
+                        ),
+                        color: Colors.white,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 5.0,
+                            spreadRadius: 5.0,
+                            offset: Offset(0.0, 1.0),
+                          )
+                        ]),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 2.0),
+                      child: Text("Status:${viewModel.status}"),
+                    )),
                 const SizedBox(
                   height: 35.0,
                 ),
@@ -67,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Padding(
                             padding:
-                                const EdgeInsets.only(left: 10.0, top: 10.0),
+                            const EdgeInsets.only(left: 10.0, top: 10.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -77,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Container(
                                       decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(30.0),
+                                          BorderRadius.circular(30.0),
                                           border: Border.all(
                                             color: Colors.black,
                                             width: .5,
@@ -101,20 +126,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                               height: 30,
                                               'assets/lottie/water.json'),
                                           Text(
-                                              '${viewModel.humidity.toStringAsFixed(2)} %'),
+                                              '${viewModel.humidity
+                                                  .toStringAsFixed(2)} %'),
                                           const SizedBox(width: 5.0),
                                           Lottie.asset(
                                               width: 30,
                                               height: 30,
                                               'assets/lottie/light.json'),
                                           Text(
-                                              '${viewModel.luminosity.toStringAsFixed(2)} lx'),
+                                              '${viewModel.luminosity
+                                                  .toStringAsFixed(2)} lx'),
                                         ]),
                                       )),
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.symmetric(vertical: 5.0),
+                                  const EdgeInsets.symmetric(vertical: 5.0),
                                   child: Image.asset('assets/images/sun.png'),
                                 ),
                               ],
@@ -143,9 +170,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Positioned(
                                     child: (viewModel.isWatering
                                         ? Lottie.asset(
-                                            'assets/lottie/rain.json')
+                                        'assets/lottie/rain.json')
                                         : Lottie.asset(
-                                            'assets/lottie/clouds.json'))),
+                                        'assets/lottie/clouds.json'))),
                               ],
                             ),
                           ),
@@ -170,7 +197,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.black,
                       ),
                       onPressed: () {
-                        Navigator.of(context).pushNamed(Routes.settings);
+                        if (viewModel.deviceSelected != null) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SettingsScreen(
+                                        connection: viewModel.connection),
+                              ));
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Select the device in the Bluetooth list!",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
                       },
                     ),
                     IconButton(

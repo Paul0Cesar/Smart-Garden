@@ -4,7 +4,6 @@ import 'package:smart_garden/ui/home/home_view.dart';
 import 'package:smart_garden/ui/settings/settings_view.dart';
 
 class Routes {
-  static const String settings = 'settings_screen';
   static const String home = 'home_screen';
   static const String bluetooth = 'bluetooth_screen';
 
@@ -13,10 +12,6 @@ class Routes {
       case Routes.home:
         return MaterialPageRoute(
             builder: (BuildContext context) => const HomeScreen());
-
-      case Routes.settings:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const SettingsScreen());
 
       case Routes.bluetooth:
         return MaterialPageRoute(

@@ -22,7 +22,10 @@ class MyApp extends StatelessWidget {
           create: (_) =>
               HomeViewViewModel(bluetoothRepository: BluetoothRepositoryImpl()),
         ),
-        ChangeNotifierProvider(create: (_) => SettingsViewModel()),
+        ChangeNotifierProvider(
+          create: (_) => SettingsViewModel(
+              bluetoothRepository: BluetoothRepositoryImpl()),
+        ),
         ChangeNotifierProvider(
           create: (_) => BluetoothViewModel(
               bluetoothRepository: BluetoothRepositoryImpl()),

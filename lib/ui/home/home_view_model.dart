@@ -8,6 +8,14 @@ import 'package:smart_garden/repositories/bluetooth/BluetoothRepository.dart';
 class HomeViewViewModel with ChangeNotifier {
   late BluetoothRepository bluetoothRepository;
 
+  BluetoothDevice? _deviceSelected;
+
+  get deviceSelected => _deviceSelected;
+
+  String _status = "Offline";
+
+  get status => _status;
+
   bool _isWatering = false;
 
   get isWatering => _isWatering;
@@ -20,15 +28,28 @@ class HomeViewViewModel with ChangeNotifier {
 
   get humidity => _humidity;
 
-  late BluetoothConnection _connection;
+  BluetoothConnection? _connection;
+
+  get connection => _connection;
 
   HomeViewViewModel({
     required this.bluetoothRepository,
   });
 
   Future<void> setDeviceConnected(BluetoothDevice device) async {
+    _deviceSelected = device;
     _connection = await bluetoothRepository.connect(device);
-    _connection.input!.listen(_onDataReceived);
+    if (_connection?.isConnected == false) {
+      _status = "Offline";
+      notifyListeners();
+      return;
+    }
+    _status = "Online";
+    notifyListeners();
+    _connection?.input!.listen(_onDataReceived).onDone(() {
+      _status = "Offline";
+      notifyListeners();
+    });
   }
 
   void _onDataReceived(Uint8List data) {
@@ -64,6 +85,6 @@ class HomeViewViewModel with ChangeNotifier {
     json["route"] = "forceWatering";
     body["forceWatering"] = true;
     json["body"] = body;
-    await bluetoothRepository.send(_connection, json);
+    await bluetoothRepository.send(_connection!, json);
   }
 }

@@ -6,6 +6,8 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'BluetoothRepository.dart';
 
 class BluetoothRepositoryImpl implements BluetoothRepository {
+  BluetoothConnection? _connection;
+
   @override
   Future<bool> getStatus() async {
     var state = await FlutterBluetoothSerial.instance.state;
@@ -18,8 +20,9 @@ class BluetoothRepositoryImpl implements BluetoothRepository {
   }
 
   @override
-  Future<BluetoothConnection> connect(BluetoothDevice device) {
-    return BluetoothConnection.toAddress(device.address);
+  Future<BluetoothConnection> connect(BluetoothDevice device) async {
+    _connection = await BluetoothConnection.toAddress(device.address);
+    return _connection!;
   }
 
   @override
