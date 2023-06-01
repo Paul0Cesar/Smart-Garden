@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.white,
                       ),
                       child: Column(
-                        mainAxisAlignment:MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
                             padding:
@@ -96,15 +96,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 15.0, vertical: 2.0),
                                         child: Row(children: [
-                                          Lottie.asset(width:30,height:30,
+                                          Lottie.asset(
+                                              width: 30,
+                                              height: 30,
                                               'assets/lottie/water.json'),
                                           Text(
-                                              '${viewModel.humidity.toString()} %'),
+                                              '${viewModel.humidity.toStringAsFixed(2)} %'),
                                           const SizedBox(width: 5.0),
-                                          Lottie.asset(width:30,height:30,
+                                          Lottie.asset(
+                                              width: 30,
+                                              height: 30,
                                               'assets/lottie/light.json'),
                                           Text(
-                                              '${viewModel.luminosity.toString()} lx'),
+                                              '${viewModel.luminosity.toStringAsFixed(2)} lx'),
                                         ]),
                                       )),
                                 ),

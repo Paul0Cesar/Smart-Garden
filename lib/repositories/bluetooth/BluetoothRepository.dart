@@ -9,5 +9,5 @@ abstract class BluetoothRepository {
 
   Future<BluetoothConnection> connect(BluetoothDevice device);
 
-  Future<bool> send(BluetoothConnection connection, Map<String, dynamic> json);
+  Future<bool> send(BluetoothConnection connection, Map<String, dynamic> payload);
 }

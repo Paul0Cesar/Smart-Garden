@@ -35,8 +35,8 @@ class BluetoothRepositoryImpl implements BluetoothRepository {
 
   @override
   Future<bool> send(
-      BluetoothConnection connection, Map<String, dynamic> json) async {
-    String text = json.toString().trim();
+      BluetoothConnection connection, Map<String, dynamic> payload) async {
+    String text = json.encode(payload);
     if (text.isNotEmpty) {
       try {
         connection.output.add(Uint8List.fromList(utf8.encode(text)));

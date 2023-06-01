@@ -46,17 +46,14 @@ class HomeViewViewModel with ChangeNotifier {
 
     if (json.containsKey("percent")) {
       _humidity = double.parse(json["percent"].toString()).abs();
-      return;
     }
 
     if (json.containsKey("lux")) {
       _luminosity = double.parse(json["lux"].toString()).abs();
-      return;
     }
 
     if (json.containsKey("wateringStatus")) {
       _isWatering = json["wateringStatus"].toString() == "true";
-      return;
     }
     notifyListeners();
   }
@@ -65,6 +62,7 @@ class HomeViewViewModel with ChangeNotifier {
     Map<String, dynamic> json = <String, dynamic>{};
     Map<String, dynamic> body = <String, dynamic>{};
     json["route"] = "forceWatering";
+    body["forceWatering"] = true;
     json["body"] = body;
     await bluetoothRepository.send(_connection, json);
   }
